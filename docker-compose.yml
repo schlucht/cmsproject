@@ -21,7 +21,7 @@ services:
             - ./code:/var/www/html
             - ./webserver/php-ini-overrides.ini:/usr/local/etc/php/conf.d/extra.ini
             - ./data/logs:/var/log
-    db:
+    database:
         image: mariadb:${MARIADB_VERSION:-latest}
         ports:
             - ${DB_PUBLIC_PORT:-3306}:3306
@@ -35,7 +35,8 @@ services:
         ports:
           - 8080:80
         environment:
-          - PMA_ARBITRARY=1volumes:
+          PMA_HOST: database
+volumes:
     db:
 networks:
-    webserver:
+        webserver:
