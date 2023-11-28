@@ -1,11 +1,9 @@
 <?php
     
 class HomeController extends Controller {
-    
+    use Controller;    
+
     public function index() {
-        $user = new UserModel;
-        $result = $user->findAll();
-        show($result);
         $this->view('Home');
     }
 }
