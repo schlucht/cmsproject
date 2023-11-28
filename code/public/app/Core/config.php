@@ -10,3 +10,9 @@ if ($_SERVER['SERVER_NAME'] === 'localhost'){
     define('DBUSER', 'schmidschluch7');
     define('DBPW', '3903Schlucht');
 
+define('APP_NAME', 'My_Website');
+define('APP_DESC', 'Die Beste Website der Welt!');
+
+/** wenn true werde die Errormeldungen angezeigt */
+define ('DEBUG', true);
+
