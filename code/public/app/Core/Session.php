@@ -1,7 +1,8 @@
 <?php
 
-class Session{
+namespace Core;
 
-    public function get(){}
-    public function set(){}
+defined('ROOTPATH') or exit('Access Denied');
+class Session
+{
 }
