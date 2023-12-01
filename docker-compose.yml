@@ -29,13 +29,13 @@ services:
             - MARIADB_ROOT_PASSWORD=schlucht
         volumes:
             - db:/var/lib/mysql
-    phpmyadmin:
-        image: phpmyadmin
+    adm:
+        image: adminer
         restart: always
-        ports:
-          - 8080:80
         environment:
-          PMA_HOST: database
+            ADMINER_DEFAULT_SERVER: database 
+        ports:
+            - 8080:8080
 volumes:
     db:
 networks:
