@@ -1,7 +1,7 @@
 <?php 
 namespace OTS\Core;
 
-use OTS\Core\{View, Config};
+use OTS\Core\{View, Config, Request};
 
 class Controller {
     private $_controllerName, $_actionName;
@@ -13,5 +13,9 @@ class Controller {
         $viewPath = strtolower($controller) . '/' .$action;
         $this->view = new View($viewPath);
         $this->view->setLayout(Config::get('default_layout'));
+        $this->request = new Request();
+        $this->onCunstruct();
     }
+
+    public function onCunstruct(){}
 }
