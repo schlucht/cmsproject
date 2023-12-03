@@ -1,44 +1,49 @@
-<?php 
+<?php
+
 namespace OTS\Core;
 
 use \PDO;
 use \Exception;
 use OTS\Core\{Config, H};
 
-class DB {
-    protected $_dbh, $_results, $_lastInsertId, $_rowCount = 0, $_fetchType = PDO::FETCH_OBJ, $_class, $_error = false;
+class DB
+{
+    protected $_dbh, $_stmt, $_results, $_lastInsertId, $_rowCount = 0, $_fetchType = PDO::FETCH_OBJ, $_class, $_error = false;
     protected static $_db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $host = Config::get('db_host');
         $name = Config::get('db_name');
         $user = Config::get('db_user');
         $pass = Config::get('db_password');
         $options = [
-            PDO::ATTR_EMULATE_PREPARES => false, 
+            PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
         ];
-        try{
+        try {
             $this->_dbh = new PDO("mysql:host={$host};dbname={$name}", $user, $pass, $options);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
     }
 
-    public static function getInstance(){
-        if(!self::$_db){
+    public static function getInstance(): PDO
+    {
+        if (!self::$_db) {
             self::$_db = new self();
         }
         return self::$_db;
     }
 
-    public function execute($sql, $bind=[]){
+    public function execute(string $sql, array $bind = []): DB
+    {
         $this->_results = null;
         $this->_lastInsertId = null;
         $this->_error = false;
         $this->_stmt = $this->_dbh->prepare($sql);
-        if(!$this->_stmt->execute($bind)) {
+        if (!$this->_stmt->execute($bind)) {
             $this->_error = true;
         } else {
             $this->_lastInsertId = $this->_dbh->lastInsertId();
@@ -47,19 +52,21 @@ class DB {
         return $this;
     }
 
-    public function query($sql, $bind=[]) {
+    public function query(string $sql, array $bind = []): DB
+    {
         $this->execute($sql, $bind);
-        if(!$this->_error) {
+        if (!$this->_error) {
             $this->_rowCount = $this->_stmt->rowCount();
             $this->_results = $this->_stmt->fetchAll($this->_fetchType);
         }
         return $this;
     }
 
-    public function insert($table, $values) {
+    public function insert(string $table, array $values): bool
+    {
         $fields = [];
         $binds = [];
-        foreach($values as $key => $value) {
+        foreach ($values as $key => $value) {
             $fields[] = $key;
             $binds[] = ":{$key}";
         }
@@ -70,21 +77,22 @@ class DB {
         return !$this->_error;
     }
 
-    public function update($table, $values, $conditions) {
+    public function update(string $table, array $values, array $conditions)
+    {
         $binds = [];
         $valueStr = "";
-        foreach($values as $field => $value) {
+        foreach ($values as $field => $value) {
             $valueStr .= ", `{$field}` = :{$field}";
             $binds[$field] = $value;
         }
         $valueStr = ltrim($valueStr, ', ');
         $sql = "UPDATE {$table} SET {$valueStr}";
 
-        if(!empty($conditions)) {
+        if (!empty($conditions)) {
             $conditionStr = " WHERE ";
-            foreach($conditions as $field => $value) {
+            foreach ($conditions as $field => $value) {
                 $conditionStr .= "`{$field}` = :cond{$field} AND ";
-                $binds['cond'.$field] = $value;
+                $binds['cond' . $field] = $value;
             }
             $conditionStr = rtrim($conditionStr, ' AND ');
             $sql .= $conditionStr;
@@ -93,24 +101,29 @@ class DB {
         return !$this->_error;
     }
 
-    public function results(){
+    public function results()
+    {
         return $this->_results;
     }
 
-    public function count() {
+    public function count()
+    {
         return $this->_rowCount;
     }
 
-    public function lastInsertId(){
+    public function lastInsertId()
+    {
         return $this->_lastInsertId;
     }
 
-    public function setClass($class) {
+    public function setClass($class)
+    {
         $this->_class = $class;
     }
 
-    public function setFetchType($type) {
+    public function setFetchType($type)
+    {
         $this->_fetchType = $type;
     }
-
 }
+
