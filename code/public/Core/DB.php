@@ -29,7 +29,7 @@ class DB
         }
     }
 
-    public static function getInstance(): PDO
+    public static function getInstance(): DB
     {
         if (!self::$_db) {
             self::$_db = new self();
@@ -116,14 +116,13 @@ class DB
         return $this->_lastInsertId;
     }
 
-    public function setClass($class)
+    public function setClass(string $class): void
     {
         $this->_class = $class;
     }
 
-    public function setFetchType($type)
+    public function setFetchType(string $type): void
     {
         $this->_fetchType = $type;
     }
 }
-

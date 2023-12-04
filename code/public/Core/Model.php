@@ -1,33 +1,40 @@
-<?php 
+<?php
+
 namespace OTS\Core;
+
 use \PDO;
 use OTS\Core\{DB, Request};
 
-class Model {
+class Model
+{
     protected static $table = "";
     protected static $columns = false;
     protected $_validationPassed = true, $_errors = [], $_skipUpdate = [];
 
-    protected static function getDb($setFetchClass = false) {
+    protected static function getDb(bool $setFetchClass = false): DB
+    {
         $db = DB::getInstance();
-        if($setFetchClass) {
+        if ($setFetchClass) {
             $db->setClass(get_called_class());
             $db->setFetchType(PDO::FETCH_CLASS);
         }
         return $db;
     }
 
-    public static function insert($values) {
+    public static function insert(array $values): bool
+    {
         $db = static::getDb();
         return $db->insert(static::$table, $values);
     }
 
-    public static function update($values, $conditions) {
+    public static function update(array $values, array $conditions): bool
+    {
         $db = static::getDb();
         return $db->update(static::$table, $values, $conditions);
     }
 
-    public function delete() {
+    public function delete()
+    {
         $db = static::getDb();
         $table = static::$table;
         $params = [
@@ -39,27 +46,31 @@ class Model {
         return $db->execute($sql, $bind);
     }
 
-    public static function find($params = []) {
+    public static function find($params = [])
+    {
         $db = static::getDb(true);
         list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
         return $db->query($sql, $bind)->results();
     }
 
-    public static function findFirst($params = []) {
+    public static function findFirst($params = [])
+    {
         $db = static::getDb(true);
         list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
         $results = $db->query($sql, $bind)->results();
-        return isset($results[0])? $results[0] : false;
+        return isset($results[0]) ? $results[0] : false;
     }
 
-    public static function findById($id) {
+    public static function findById($id)
+    {
         return self::findFirst([
-            'conditions' => "id = :id", 
+            'conditions' => "id = :id",
             'bind' => ['id' => $id]
         ]);
     }
 
-    public static function findTotal($params = []) {
+    public static function findTotal($params = [])
+    {
         unset($params['limit']);
         unset($params['offset']);
         $table = static::$table;
@@ -72,30 +83,33 @@ class Model {
         return $total;
     }
 
-    public function save() {
+    public function save()
+    {
         $save = false;
         $this->beforeSave();
-        if($this->_validationPassed) {
+        if ($this->_validationPassed) {
             $db = static::getDb();
             $values = $this->getValuesForSave();
-            if($this->isNew()) {
+            if ($this->isNew()) {
                 $save = $db->insert(static::$table, $values);
-                if($save) {
+                if ($save) {
                     $this->id = $db->getLastInsertId();
                 }
             } else {
-                $save = $db->update(static::$table,$values, ['id' => $this->id]);
+                $save = $db->update(static::$table, $values, ['id' => $this->id]);
             }
         }
         return $save;
     }
 
-    public function isNew() {
+    public function isNew()
+    {
         return empty($this->id);
     }
 
-    public static function selectBuilder($params = []) {
-        $columns = array_key_exists('columns', $params)? $params['columns'] : "*";
+    public static function selectBuilder($params = [])
+    {
+        $columns = array_key_exists('columns', $params) ? $params['columns'] : "*";
         $table = static::$table;
         $sql = "SELECT {$columns} FROM {$table}";
         list('sql' => $conds, 'bind' => $bind) = self::queryParamBuilder($params);
@@ -103,73 +117,76 @@ class Model {
         return ['sql' => $sql, 'bind' => $bind];
     }
 
-    public static function queryParamBuilder($params = []) {
+    public static function queryParamBuilder($params = [])
+    {
         $sql = "";
-        $bind = array_key_exists('bind', $params)? $params['bind'] : [];
+        $bind = array_key_exists('bind', $params) ? $params['bind'] : [];
         // joins
         // [['table2', 'table1.id = table2.key', 'tableAlias', 'LEFT' ]]
-        if(array_key_exists('joins', $params)) {
+        if (array_key_exists('joins', $params)) {
             $joins = $params['joins'];
-            foreach($joins as $join) {
+            foreach ($joins as $join) {
                 $joinTable = $join[0];
                 $joinOn = $join[1];
-                $joinAlias = isset($join[2])? $join[2] : "";
-                $joinType = isset($join[3])? "{$join[3]} JOIN" : "JOIN";
+                $joinAlias = isset($join[2]) ? $join[2] : "";
+                $joinType = isset($join[3]) ? "{$join[3]} JOIN" : "JOIN";
                 $sql .= " {$joinType} {$joinTable} {$joinAlias} ON {$joinOn}";
             }
         }
 
         // where 
-        if(array_key_exists('conditions', $params)) {
+        if (array_key_exists('conditions', $params)) {
             $conds = $params['conditions'];
             $sql .= " WHERE {$conds}";
         }
 
         // group 
-        if(array_key_exists('group', $params)) {
+        if (array_key_exists('group', $params)) {
             $group = $params['group'];
             $sql .= " GROUP BY {$group}";
         }
 
         // order
-        if(array_key_exists('order', $params)) {
+        if (array_key_exists('order', $params)) {
             $order = $params['order'];
             $sql .= " ORDER BY {$order}";
-        } 
+        }
 
         // limit
-        if(array_key_exists('limit', $params)) {
+        if (array_key_exists('limit', $params)) {
             $limit = $params['limit'];
             $sql .= " LIMIT {$limit}";
         }
 
         // offset
-        if(array_key_exists('offest', $params)) {
+        if (array_key_exists('offest', $params)) {
             $offset = $params['offset'];
             $sql .= " OFFSET {$offset}";
         }
         return ['sql' => $sql, 'bind' => $bind];
     }
 
-    public function getValuesForSave(){
+    public function getValuesForSave()
+    {
         $columns = static::getColumns();
         $values = [];
-        foreach($columns as $column) {
-            if(!in_array($column, $this->_skipUpdate)){
+        foreach ($columns as $column) {
+            if (!in_array($column, $this->_skipUpdate)) {
                 $values[$column] = $this->{$column};
             }
         }
         return $values;
     }
 
-    public static function getColumns(){
-        if(!static::$columns) {
+    public static function getColumns()
+    {
+        if (!static::$columns) {
             $db = static::getDb();
             $table = static::$table;
             $sql = "SHOW COLUMNS FROM {$table}";
             $results = $db->query($sql)->results();
             $columns = [];
-            foreach($results as $column) {
+            foreach ($results as $column) {
                 $columns[] = $column->Field;
             }
             static::$columns = $columns;
@@ -177,41 +194,49 @@ class Model {
         return static::$columns;
     }
 
-    public function runValidation($validator) {
+    public function runValidation($validator)
+    {
         $validates = $validator->runValidation();
-        if(!$validates) {
+        if (!$validates) {
             $this->_validationPassed = false;
             $this->_errors[$validator->field] = $validator->msg;
         }
     }
 
-    public function getErrors(){
+    public function getErrors()
+    {
         return $this->_errors;
     }
 
-    public function setError($name, $value) {
+    public function setError($name, $value)
+    {
         $this->_errors[$name] = $value;
     }
 
-    public function timeStamps() {
+    public function timeStamps()
+    {
         $dt = new \DateTime("now", new \DateTimeZone("UTC"));
         $now = $dt->format('Y-m-d H:i:s');
         $this->updated_at = $now;
-        if($this->isNew()) {
+        if ($this->isNew()) {
             $this->created_at = $now;
         }
     }
 
-    public static function mergeWithPagination($params = []) {
+    public static function mergeWithPagination($params = [])
+    {
         $request = new Request();
         $page = $request->get('p');
-        if(!$page || $page < 1) $page = 1;
-        $limit = $request->get('limit')? $request->get('limit') : 25;
+        if (!$page || $page < 1) $page = 1;
+        $limit = $request->get('limit') ? $request->get('limit') : 25;
         $offset = ($page - 1) * $limit;
         $params['limit'] = $limit;
         $params['offset'] = $offset;
         return $params;
     }
 
-    public function beforeSave(){}
+    public function beforeSave()
+    {
+    }
 }
+

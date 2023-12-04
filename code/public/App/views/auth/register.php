@@ -15,6 +15,7 @@ $this->start('content'); ?>
             <?= FH::inputBlock('Nachname', 'lname', '', ['class' => "input"], ['class' => ''], $this->errors) ?>
             <?= FH::inputBlock('Email', 'email', '', ['class' => "input"], ['type' => 'email'], $this->errors) ?>
             <?= FH::inputBlock('Email', 'email', '', ['class' => "input"], ['type' => 'email'], $this->errors) ?>
+            <?= FH::selectBlock('Role', 'acl', '', $this->role_options, ['class' => ''], ['class' => ''], $this->errors) ?>
             <?= FH::inputBlock('Passwort', 'password', '', ['class' => "input"], ['type' => 'password'], $this->errors) ?>
             <?= FH::inputBlock('Passwort bestädigen', 'confirm_password', '', ['class' => "input"], ['type' => 'password'], $this->errors) ?>
         </div>
