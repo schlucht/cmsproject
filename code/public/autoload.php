@@ -18,7 +18,7 @@ spl_autoload_register(function ($class) {
   $prefix = 'OTS';
 
   // base directory for the namespace prefix
-  $base_dir = __DIR__ . '../app';
+  $base_dir = __DIR__ . '/';
   // does the class use the namespace prefix?
   $len = strlen($prefix);
   if (strncmp($prefix, $class, $len) !== 0) {
@@ -39,4 +39,3 @@ spl_autoload_register(function ($class) {
     require $file;
   }
 });
-

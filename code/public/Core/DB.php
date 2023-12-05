@@ -37,7 +37,7 @@ class DB
         return self::$_db;
     }
 
-    public function execute(string $sql, array $bind = []): DB
+    public function execute(string $sql, $bind = []): DB
     {
         $this->_results = null;
         $this->_lastInsertId = null;
@@ -52,7 +52,7 @@ class DB
         return $this;
     }
 
-    public function query(string $sql, array $bind = []): DB
+    public function query(string $sql, $bind = []): DB
     {
         $this->execute($sql, $bind);
         if (!$this->_error) {

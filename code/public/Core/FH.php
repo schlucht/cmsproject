@@ -32,7 +32,8 @@ class FH
         $html = "<div {$wrapperStr}>";
         $html .= "<lable for='{$id}'>{$label}</label>";
         $html .= "<select id='{$id}' name='{$id}' {$inputAttrs}>";
-        foreach ($options as $val) {
+        foreach ($options as $val => $display) {
+            H::dnd($display);
             $selected = $val == $value ? ' selected ' : '';
             $html .= "<option value='{$val}'{$selected}>{$display}</option>";
             $html .= "</select>";
@@ -68,4 +69,3 @@ class FH
         return $html;
     }
 }
-

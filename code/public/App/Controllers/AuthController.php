@@ -8,14 +8,14 @@ use OTS\App\Models\Users;
 class AuthController extends Controller
 {
 
-    public function registerAction(string $id = 'new'): void
+    public function registerAction($id = 0): void
     {
-        if ($id == 'new') {
+        if ($id == 0) {
             $user = new Users();
         } else {
             $user = Users::findById($id);
         }
-        $this->view->user = $user;
+        //$this->view->user = $user;
         $this->view->role_options = [
             '' => '',
             Users::AUTHOR_PERMISSION => 'Author',

@@ -83,3 +83,6 @@
 [Fri Dec 01 14:42:07.211199 2023] [mpm_event:notice] [pid 1:tid 139696442161992] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
 [Fri Dec 01 14:42:07.211510 2023] [core:notice] [pid 1:tid 139696442161992] AH00094: Command line: 'httpd -D FOREGROUND'
 [Fri Dec 01 14:57:47.787408 2023] [mpm_event:notice] [pid 1:tid 139696442161992] AH00492: caught SIGWINCH, shutting down gracefully
+[Mon Dec 04 18:04:17.919510 2023] [mpm_event:notice] [pid 1:tid 140380401068872] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Mon Dec 04 18:04:17.920260 2023] [core:notice] [pid 1:tid 140380401068872] AH00094: Command line: 'httpd -D FOREGROUND'
+[Tue Dec 05 05:02:09.831219 2023] [mpm_event:notice] [pid 1:tid 140380401068872] AH00492: caught SIGWINCH, shutting down gracefully
