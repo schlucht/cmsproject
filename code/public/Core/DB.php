@@ -106,12 +106,12 @@ class DB
         return $this->_results;
     }
 
-    public function count()
+    public function getRowCount(): int
     {
         return $this->_rowCount;
     }
 
-    public function lastInsertId()
+    public function getLastInsertId()
     {
         return $this->_lastInsertId;
     }

@@ -7,20 +7,26 @@ use OTS\App\Models\Users;
 
 class AuthController extends Controller
 {
+    public $role_options = [];
 
-    public function registerAction($id = 0): void
+    public function registerAction($id = 'new'): void
     {
-        if ($id == 0) {
+        if ($id === 'new') {
             $user = new Users();
         } else {
             $user = Users::findById($id);
         }
-        //$this->view->user = $user;
+
+        if ($this->request->isPost()) {
+            H::dnd($this->request->get());
+        }
+        $this->view->user = $user;
         $this->view->role_options = [
             '' => '',
             Users::AUTHOR_PERMISSION => 'Author',
             Users::ADMIN_PERMISSION => 'Admin',
         ];
+
         $this->view->errors = $user->getErrors();
         $this->view->render();
     }

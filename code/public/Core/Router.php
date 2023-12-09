@@ -3,8 +3,6 @@
 
 namespace OTS\Core;
 
-use OTS\App\Controllers\BibleController;
-
 class Router
 {
 

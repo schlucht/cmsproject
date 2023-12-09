@@ -4,8 +4,18 @@ namespace OTS\Core;
 
 class FH
 {
-    public static function inputBlock($label, $id, $value, $inputAttrs = [], $wrapperAttrs = [], $errors = [])
-    {
+    /**
+     * @param $label string
+     * 
+     */
+    public static function inputBlock(
+        string $label,
+        string $id,
+        string $value,
+        array $inputAttrs = [],
+        array $wrapperAttrs = [],
+        array $errors = []
+    ): string {
         $wrapperStr = self::processAttrs($wrapperAttrs);
         $inputAttrs = self::appendErrors($id, $inputAttrs, $errors);
         $inputAttrs = self::processAttrs($inputAttrs);
@@ -16,11 +26,12 @@ class FH
         $html .= "<div class='invalid-feedback'>{$errorMsg}</div></div>";
         return $html;
     }
+
     public static function selectBlock(
         string $label,
         string $id,
-        string  $value,
-        mixed $options,
+        string $value,
+        array $options,
         array $inputAttrs = [],
         array $wrapperAttrs = [],
         array $errors = []
@@ -30,16 +41,16 @@ class FH
         $wrapperStr = self::processAttrs($wrapperAttrs);
         $errorMsg = array_key_exists($id, $errors) ? $errors[$id] : "";
         $html = "<div {$wrapperStr}>";
-        $html .= "<lable for='{$id}'>{$label}</label>";
+        $html .= "<label for='{$id}'>{$label}</label>";
         $html .= "<select id='{$id}' name='{$id}' {$inputAttrs}>";
         foreach ($options as $val => $display) {
-            H::dnd($display);
             $selected = $val == $value ? ' selected ' : '';
             $html .= "<option value='{$val}'{$selected}>{$display}</option>";
+            }
             $html .= "</select>";
             $html .= "<div class='invalid'>{$errorMsg}</div></div>";
             return $html;
-        }
+        
     }
     public static function appendErrors($key, $inputAttrs, $errors)
     {
@@ -60,7 +71,7 @@ class FH
         return $html;
     }
 
-    public static function processAttrs($attrs)
+    public static function processAttrs(array $attrs): string
     {
         $html = "";
         foreach ($attrs as $key => $value) {
