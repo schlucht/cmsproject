@@ -57,7 +57,11 @@ class DB
         $this->execute($sql, $bind);
         if (!$this->_error) {
             $this->_rowCount = $this->_stmt->rowCount();
-            $this->_results = $this->_stmt->fetchAll($this->_fetchType);
+            if($this->_fetchType === PDO::FETCH_CLASS){
+                $this->_results = $this->_stmt->fetchAll($this->_fetchType, $this->_class);
+            }else {
+                $this->_results = $this->_stmt->fetchAll($this->_fetchType);
+            }
         }
         return $this;
     }
@@ -111,7 +115,7 @@ class DB
         return $this->_rowCount;
     }
 
-    public function getLastInsertId()
+    public function lastInsertId()
     {
         return $this->_lastInsertId;
     }
@@ -121,7 +125,7 @@ class DB
         $this->_class = $class;
     }
 
-    public function setFetchType(string $type): void
+    public function setFetchType($type): void
     {
         $this->_fetchType = $type;
     }

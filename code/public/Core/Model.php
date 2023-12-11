@@ -9,7 +9,7 @@ class Model
 {
     protected static $table = "";
     protected static $columns = false;
-    protected $_validationPassed = true, $_errors = [], $_skipUpdate = [], $_updated_at, $_created_at;
+    protected $_validationPassed = true, $_errors = [], $_skipUpdate = []; 
     public $id = 0;
     protected static function getDb(bool $setFetchClass = false): DB
     {
@@ -53,7 +53,7 @@ class Model
         return $db->query($sql, $bind)->results();
     }
 
-    public static function findFirst(array $params = []): DB
+    public static function findFirst(array $params = [])
     {
         $db = static::getDb(true);
         list('sql' => $sql, 'bind' => $bind) = self::selectBuilder($params);
@@ -61,12 +61,13 @@ class Model
         return isset($results[0]) ? $results[0] : false;
     }
 
-    public static function findById(int $id): DB
+    public static function findById(int $id)
     {
-        return self::findFirst([
+        $res = static::findFirst([
             'conditions' => "id = :id",
             'bind' => ['id' => $id]
         ]);
+        return $res;
     }
 
     public static function findTotal($params = [])
@@ -93,7 +94,7 @@ class Model
             if ($this->isNew()) {
                 $save = $db->insert(static::$table, $values);
                 if ($save) {
-                    $this->id = $db->getLastInsertId();
+                    $this->id = $db->lastInsertId();
                 }
             } else {
                 $save = $db->update(static::$table, $values, ['id' => $this->id]);
@@ -217,9 +218,9 @@ class Model
     {
         $dt = new \DateTime("now", new \DateTimeZone("UTC"));
         $now = $dt->format('Y-m-d H:i:s');
-        $this->_updated_at = $now;
+        $this->updated_at = $now;
         if ($this->isNew()) {
-            $this->_created_at = $now;
+            $this->created_at = $now;
         }
     }
 

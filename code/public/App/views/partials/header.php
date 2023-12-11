@@ -2,5 +2,6 @@
 
 /** @var TestCase $this */
 ?>
+<header>
 <?php $this->partial('partials/mainMenu'); ?>
-der header
+</header>

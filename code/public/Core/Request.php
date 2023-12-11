@@ -1,6 +1,6 @@
 <?php 
 namespace OTS\Core;
-
+use OTS\Core\H;
 class Request {
 
     public function isPost() {
@@ -35,7 +35,9 @@ class Request {
             }
             return $data;
         }
-        return array_key_exists($input, $_REQUEST)? self::sanitize($_REQUEST[$input]) : false;
+
+        $res =  array_key_exists($input, $_REQUEST)? self::sanitize($_REQUEST[$input]) : false;
+        return $res;
     }
 
     public static function sanitize($dirty) {

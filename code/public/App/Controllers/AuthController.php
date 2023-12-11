@@ -11,14 +11,19 @@ class AuthController extends Controller
 
     public function registerAction($id = 'new'): void
     {
+        //H::dnd($id);
         if ($id === 'new') {
             $user = new Users();
         } else {
             $user = Users::findById($id);
         }
-
-        if ($this->request->isPost()) {
-            H::dnd($this->request->get());
+        if($this->request->isPost()) {
+            Session::csrfCheck();
+            $fields = ['fname', 'lname', 'email', 'acl', 'password', 'confirm'];
+            foreach($fields as $field){
+                $user->{$field} = $this->request->get($field);
+            }
+            $user->save(); 
         }
         $this->view->user = $user;
         $this->view->role_options = [

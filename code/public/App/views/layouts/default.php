@@ -19,7 +19,10 @@ use OTS\Core\Config;
 <body>
     <?php $this->partial('partials/header');
     ?>
-    <?php $this->content('content'); ?>
+        <main>
+            <?php $this->content('content'); ?>
+        </main>
+    <?php $this->partial('partials/footer');?>
 </body>
 
 </html>

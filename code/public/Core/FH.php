@@ -1,6 +1,7 @@
 <?php
 
 namespace OTS\Core;
+use OTS\Core\Session;
 
 class FH
 {
@@ -11,7 +12,7 @@ class FH
     public static function inputBlock(
         string $label,
         string $id,
-        string $value,
+        mixed $value,
         array $inputAttrs = [],
         array $wrapperAttrs = [],
         array $errors = []
@@ -30,7 +31,7 @@ class FH
     public static function selectBlock(
         string $label,
         string $id,
-        string $value,
+        mixed $value,
         array $options,
         array $inputAttrs = [],
         array $wrapperAttrs = [],
@@ -77,6 +78,12 @@ class FH
         foreach ($attrs as $key => $value) {
             $html .= " {$key}='{$value}'";
         }
+        return $html;
+    }
+
+    public static function csrfField(){
+        $token = Session::createCsrfToken();
+        $html = "<input type='hidden' value='{$token}' name=csrfToken'>";
         return $html;
     }
 }
