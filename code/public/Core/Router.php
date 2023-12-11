@@ -1,11 +1,8 @@
 <?php
-
-
 namespace OTS\Core;
 
 class Router
 {
-
     public static function route($url)
     {
         $urlParts = explode('/', $url);
@@ -28,7 +25,5 @@ class Router
         }
         call_user_func_array([$controller, $action], $urlParts);
     }
-    
-
 }
 
