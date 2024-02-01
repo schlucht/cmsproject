@@ -5,3 +5,4 @@
 !.env.dist
 !Config.php
 .DS_STORE
+vendor

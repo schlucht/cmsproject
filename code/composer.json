@@ -1,0 +1,15 @@
+{
+    "name": "schlucht/framwork",
+    "autoload": {
+        "psr-4": {
+            "ots\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lothar",
+            "email": "web@jagolo.ch"
+        }
+    ],
+    "require": {}
+}

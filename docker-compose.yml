@@ -21,22 +21,6 @@ services:
             - ./code:/var/www/html
             - ./webserver/php-ini-overrides.ini:/usr/local/etc/php/conf.d/extra.ini
             - ./data/logs:/var/log
-    database:
-        image: mariadb:${MARIADB_VERSION:-latest}
-        ports:
-            - ${DB_PUBLIC_PORT:-3306}:3306
-        environment:
-            - MARIADB_ROOT_PASSWORD=schlucht
-        volumes:
-            - db:/var/lib/mysql
-    adm:
-        image: adminer
-        restart: always
-        environment:
-            ADMINER_DEFAULT_SERVER: database 
-        ports:
-            - 8088:8080
-volumes:
-    db:
+
 networks:
     webserver:
