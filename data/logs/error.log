@@ -97,3 +97,28 @@
 [Thu Feb 01 04:53:08.838738 2024] [mpm_event:notice] [pid 1:tid 140117258279688] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
 [Thu Feb 01 04:53:08.838795 2024] [core:notice] [pid 1:tid 140117258279688] AH00094: Command line: 'httpd -D FOREGROUND'
 [Thu Feb 01 04:53:10.916114 2024] [mpm_event:notice] [pid 1:tid 140117258279688] AH00492: caught SIGWINCH, shutting down gracefully
+[Thu Feb 01 06:50:12.417043 2024] [mpm_event:notice] [pid 1:tid 139789117610760] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Thu Feb 01 06:50:12.417222 2024] [core:notice] [pid 1:tid 139789117610760] AH00094: Command line: 'httpd -D FOREGROUND'
+[Thu Feb 01 06:52:49.562313 2024] [mpm_event:notice] [pid 1:tid 139789117610760] AH00492: caught SIGWINCH, shutting down gracefully
+[Thu Feb 01 06:52:53.883816 2024] [mpm_event:notice] [pid 1:tid 140434183826184] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Thu Feb 01 06:52:53.883888 2024] [core:notice] [pid 1:tid 140434183826184] AH00094: Command line: 'httpd -D FOREGROUND'
+[Thu Feb 01 07:13:23.723865 2024] [mpm_event:notice] [pid 1:tid 140434183826184] AH00492: caught SIGWINCH, shutting down gracefully
+[Thu Feb 01 07:13:27.160967 2024] [mpm_event:notice] [pid 1:tid 140441561291528] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Thu Feb 01 07:13:27.161058 2024] [core:notice] [pid 1:tid 140441561291528] AH00094: Command line: 'httpd -D FOREGROUND'
+[Thu Feb 01 07:13:51.954406 2024] [mpm_event:notice] [pid 1:tid 140441561291528] AH00492: caught SIGWINCH, shutting down gracefully
+[Thu Feb 01 07:13:57.173003 2024] [mpm_event:notice] [pid 1:tid 140051253918472] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Thu Feb 01 07:13:57.173310 2024] [core:notice] [pid 1:tid 140051253918472] AH00094: Command line: 'httpd -D FOREGROUND'
+[Thu Feb 01 07:14:46.072043 2024] [mpm_event:notice] [pid 1:tid 140051253918472] AH00492: caught SIGWINCH, shutting down gracefully
+[Thu Feb 01 07:14:49.795343 2024] [mpm_event:notice] [pid 1:tid 140344657210120] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Thu Feb 01 07:14:49.795433 2024] [core:notice] [pid 1:tid 140344657210120] AH00094: Command line: 'httpd -D FOREGROUND'
+[Thu Feb 01 07:59:26.988740 2024] [mpm_event:notice] [pid 1:tid 140718538570504] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Thu Feb 01 07:59:26.993973 2024] [core:notice] [pid 1:tid 140718538570504] AH00094: Command line: 'httpd -D FOREGROUND'
+[Thu Feb 01 10:45:26.839511 2024] [mpm_event:notice] [pid 1:tid 139881681197832] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Thu Feb 01 10:45:26.839785 2024] [core:notice] [pid 1:tid 139881681197832] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Feb 02 07:02:39.386817 2024] [mpm_event:notice] [pid 1:tid 140277693405960] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Fri Feb 02 07:02:39.388772 2024] [core:notice] [pid 1:tid 140277693405960] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Feb 02 07:02:51.833783 2024] [authz_core:error] [pid 9:tid 140277689318200] [client 172.18.0.1:52028] AH01630: client denied by server configuration: /var/www/html/public/.htaccess, referer: https://github.com/
+[Fri Feb 02 08:24:57.119794 2024] [mpm_event:notice] [pid 1:tid 139775710096136] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Fri Feb 02 08:24:57.123514 2024] [core:notice] [pid 1:tid 139775710096136] AH00094: Command line: 'httpd -D FOREGROUND'
+[Fri Feb 02 10:48:28.232296 2024] [mpm_event:notice] [pid 1:tid 140129736661768] AH00489: Apache/2.4.58 (Unix) configured -- resuming normal operations
+[Fri Feb 02 10:48:28.237452 2024] [core:notice] [pid 1:tid 140129736661768] AH00094: Command line: 'httpd -D FOREGROUND'

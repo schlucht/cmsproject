@@ -1,5 +1,7 @@
 {
-    "name": "schlucht/framwork",
+    "name": "codespace/code",
+    "description": "The Biblebook API",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "ots\\": "src/"
@@ -7,9 +9,11 @@
     },
     "authors": [
         {
-            "name": "Lothar",
+            "name": "Schmid Lothar",
             "email": "web@jagolo.ch"
         }
     ],
-    "require": {}
+    "require": {
+        "firebase/php-jwt": "^6.10"
+    }
 }

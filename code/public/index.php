@@ -1,18 +1,25 @@
-
 <?php
 
+use ots\controllers\UserController;
+
+use ots\core\{Router, Request, F};
+
+
 require_once __DIR__ . '/../vendor/autoload.php';
-use ots\core\Application;
 
-$app = new Application();
+$router = new Router();
+
+$router->register('/', function(Request $request) {
+    return date('Y/M/d h:i:s') . ' Access denied!';
+}, 'GET');
 
 
-$app->router->get('/', function () {
-    return 'Hello World';
-});
+$router->register('/api/users', [UserController::class, 'getUsers'], 'GET');
 
-$app->router->get('/contact', function () {
-    return 'Hello Contact';
-});
+$request = Request::createFromGlobal();
 
-$app->run();
+try {
+    echo $router->handle($request);
+} catch (\ots\core\RouteNotFoundException $e) {
+    echo $e->getMessage();
+}

@@ -2,26 +2,41 @@
 
 namespace ots\core;
 
-class Router 
+use ots\core\F;
+
+final class Router
 {
-    protected array $routes = [];
-    public Request $request;
+    private $routes = [];
+    private const SEPARATOR = '::';
 
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
+    public function register(string $url, callable $fn, string $methods = 'GET|POST'): array{
+        $url = preg_replace('~{(.*)}~mU', '(?<$1>\S+)', $url);
+        $url = sprintf('~^(%s)/?%s(%s)$~i',$url, self::SEPARATOR, $methods);
+        $this->routes[$url]= $fn;
+
+        return $this->routes;
     }
 
-    public function get($path, $callback)
+    public function handle(Request $request): mixed
     {
-       $this->routes['get'][$path] = $callback;
-    }
+        $searchString = $request->getUri() . self::SEPARATOR .$request->getMethod();
 
-    public function resolve()
-    {
-        echo '<pre>';
-        $this->request->getPath();
-        echo '</pre>';
-    }
+        foreach($this->routes as $rexEx => $action){
+            $matches = [];
+            if(!preg_match($rexEx,$searchString,$matches)){
+                continue;
+            }
+            $matches = array_filter($matches,function ($key){
+                return is_int($key) === false;
+            }, ARRAY_FILTER_USE_KEY);
 
+            $matches['request'] = $request;
+
+            return $action(...$matches);
+        }
+        
+        $message = sprintf('Route %s not found',$request->getUri());
+        http_response_code(404);
+        throw new RouteNotFoundException($message);
+    }
 }
