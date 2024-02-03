@@ -1,21 +1,28 @@
-<?php 
+<?php
 
 namespace ots\core;
+
 class Model extends Database
 {
 
 
-	protected $limit 		= 10;
-	protected $offset 		= 0;
-	protected $order_type 	= "desc";
-	protected $order_column = "id";
-	public $errors 		= [];
+	protected $limit = 10;
+	protected $offset = 0;
+	protected $order_type = "desc";
+	protected $order_column = "updated_at";
+	public $errors = [];
+	public $table = "";
+	public $allowedColumns = [];
 
-    public function __construct(public $table, public $allowedColumns=[]){}
+	public function __construct(string $table, array $allowedColumns = [])
+	{
+		$this->table = $table;
+		$this->allowedColumns = $allowedColumns;
+	}
 
 	public function findAll()
 	{
-	 
+
 		$query = "select * from $this->table order by $this->order_column $this->order_type limit $this->limit offset $this->offset";
 
 		return $this->query($query);
@@ -28,14 +35,14 @@ class Model extends Database
 		$query = "select * from $this->table where ";
 
 		foreach ($keys as $key) {
-			$query .= $key . " = :". $key . " && ";
+			$query .= $key . " = :" . $key . " && ";
 		}
 
 		foreach ($keys_not as $key) {
-			$query .= $key . " != :". $key . " && ";
+			$query .= $key . " != :" . $key . " && ";
 		}
-		
-		$query = trim($query," && ");
+
+		$query = trim($query, " && ");
 
 		$query .= " order by $this->order_column $this->order_type limit $this->limit offset $this->offset";
 		$data = array_merge($data, $data_not);
@@ -50,20 +57,20 @@ class Model extends Database
 		$query = "select * from $this->table where ";
 
 		foreach ($keys as $key) {
-			$query .= $key . " = :". $key . " && ";
+			$query .= $key . " = :" . $key . " && ";
 		}
 
 		foreach ($keys_not as $key) {
-			$query .= $key . " != :". $key . " && ";
+			$query .= $key . " != :" . $key . " && ";
 		}
-		
-		$query = trim($query," && ");
+
+		$query = trim($query, " && ");
 
 		$query .= " limit $this->limit offset $this->offset";
 		$data = array_merge($data, $data_not);
-		
+
 		$result = $this->query($query, $data);
-		if($result)
+		if ($result)
 			return $result[0];
 
 		return false;
@@ -71,14 +78,12 @@ class Model extends Database
 
 	public function insert($data)
 	{
-		
+
 		/** remove unwanted data **/
-		if(!empty($this->allowedColumns))
-		{
+		if (!empty($this->allowedColumns)) {
 			foreach ($data as $key => $value) {
-				
-				if(!in_array($key, $this->allowedColumns))
-				{
+
+				if (!in_array($key, $this->allowedColumns)) {
 					unset($data[$key]);
 				}
 			}
@@ -86,7 +91,7 @@ class Model extends Database
 
 		$keys = array_keys($data);
 
-		$query = "insert into $this->table (".implode(",", $keys).") values (:".implode(",:", $keys).")";
+		$query = "insert into $this->table (" . implode(",", $keys) . ") values (:" . implode(",:", $keys) . ")";
 		$this->query($query, $data);
 
 		return false;
@@ -96,12 +101,10 @@ class Model extends Database
 	{
 
 		/** remove unwanted data **/
-		if(!empty($this->allowedColumns))
-		{
+		if (!empty($this->allowedColumns)) {
 			foreach ($data as $key => $value) {
-				
-				if(!in_array($key, $this->allowedColumns))
-				{
+
+				if (!in_array($key, $this->allowedColumns)) {
 					unset($data[$key]);
 				}
 			}
@@ -111,10 +114,10 @@ class Model extends Database
 		$query = "update $this->table set ";
 
 		foreach ($keys as $key) {
-			$query .= $key . " = :". $key . ", ";
+			$query .= $key . " = :" . $key . ", ";
 		}
 
-		$query = trim($query,", ");
+		$query = trim($query, ", ");
 
 		$query .= " where $id_column = :$id_column ";
 
@@ -136,5 +139,5 @@ class Model extends Database
 
 	}
 
-	
+
 }

@@ -15,4 +15,10 @@ class F
             die();
         }
     }
+
+    public static function message(string $message, mixed $data = null)
+    {
+        //$arr = array_merge(['message' => $message], $data);
+        return json_encode(['message' => $message, 'data' => json_encode($data)]);
+    }
 }
